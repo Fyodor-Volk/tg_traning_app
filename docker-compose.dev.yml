@@ -1,0 +1,49 @@
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: fitness_diary
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata_dev:/var/lib/postgresql/data
+
+  backend:
+    image: python:3.12-slim
+    working_dir: /app
+    volumes:
+      - ./backend:/app
+    environment:
+      DATABASE_URL: postgresql+asyncpg://postgres:postgres@db:5432/fitness_diary
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:-CHANGE_ME}
+      DEBUG: "true"
+      PYTHONPATH: /app
+    command: >
+      sh -c "pip install --no-cache-dir -r requirements.txt
+      && alembic upgrade head
+      && uvicorn app.main:app --reload --host 0.0.0.0 --port 8000"
+    depends_on:
+      - db
+    ports:
+      - "8000:8000"
+
+  frontend:
+    image: node:20-alpine
+    working_dir: /app
+    volumes:
+      - ./frontend:/app
+    environment:
+      VITE_API_BASE_URL: http://localhost:8000/api/v1
+      VITE_DEV_TELEGRAM_ID: "1"
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0 --port 5173"
+    depends_on:
+      - backend
+    ports:
+      - "5173:5173"
+
+volumes:
+  pgdata_dev:
+

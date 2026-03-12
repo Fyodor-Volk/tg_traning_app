@@ -1,0 +1,48 @@
+services:
+  db:
+    build:
+      context: ./db
+    environment:
+      POSTGRES_DB: fitness_diary
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: ./backend
+    environment:
+      DATABASE_URL: postgresql+asyncpg://postgres:postgres@db:5432/fitness_diary
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:-CHANGE_ME}
+      DEBUG: "true"
+    depends_on:
+      - db
+    ports:
+      - "8000:8000"
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_BASE_URL: http://localhost:8000/api/v1
+    depends_on:
+      - backend
+    ports:
+      - "8080:80"
+
+  telegram:
+    build:
+      context: ./telegram
+    environment:
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:-}
+      TELEGRAM_CHAT_ID: ${TELEGRAM_CHAT_ID:-}
+      NOTIFY_INTERVAL_SECONDS: ${NOTIFY_INTERVAL_SECONDS:-0}
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:
+
