@@ -31,8 +31,8 @@ services:
       DATABASE_URL: postgresql+asyncpg://postgres:postgres@db:5432/fitness_diary
       TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:-CHANGE_ME}
       DEBUG: "true"
-    depends_on:
-      - db
+#    depends_on:
+#      - db
     ports:
       - "8000:8000"
 
