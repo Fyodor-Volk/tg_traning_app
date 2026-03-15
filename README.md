@@ -1,5 +1,10 @@
 # Fitness Training Diary (Telegram Mini App)
 
+>Важно!
+>Значительная часть проекта (fronend, backend, telgram) сгенерирована с помощью AI.
+>Основная цель проекта прокачака и демонстрация своих DevOps-навыков, таких как docker, CI/CD, k8s.
+>Не рекомендуется для работы в prod среде!
+
 ## Архитектура проекта
 
 Проект состоит из 4 компонентов:
@@ -77,6 +82,34 @@ docker compose -f docker-compose.dev.yml up
 
 ## Быстрый старт (Docker)
 
+### Makefile (короткие команды)
+
+В корне проекта доступен `Makefile` с удобными алиасами для Docker Compose:
+
+```bash
+make help
+
+# prod
+make up
+make down
+make build
+make logs
+
+# dev
+make up-dev
+make down-dev
+make build-dev
+make logs-dev
+
+# утилиты
+make ps
+make ps-dev
+make restart
+make restart-dev
+make clean
+make db-only
+```
+
 1) Создай `.env` по примеру:
 
 ```bash
@@ -88,7 +121,7 @@ cp .env.example .env
 3) Запусти:
 
 ```bash
-docker compose up --build
+make up
 ```
 
 - Frontend: `http://localhost:8080`
@@ -102,7 +135,7 @@ docker compose up --build
 В корне проекта:
 
 ```bash
-docker compose -f docker-compose.dev.yml up
+make up-dev
 ```
 
 Что получишь:
