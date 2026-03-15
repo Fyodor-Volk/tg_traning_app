@@ -25,6 +25,4 @@ jobs:
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Build compose images
-        run: docker compose -f docker-compose.yml build
-      - name: Push images to registry
-        run: docker compose -f docker-compose.yml push
+        run: docker compose -f docker-compose.yml build --push
