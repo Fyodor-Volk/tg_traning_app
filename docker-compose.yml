@@ -1,6 +1,6 @@
 services:
   nginx:
-    image: ghcr.io/fyodor-volk/nginx_tg_app:latest
+    image: ghcr.io/fyodor-volk/nginx_tg_app:${GITHUB_SHA}
     build:
       context: ./nginx
     environment:
@@ -11,7 +11,7 @@ services:
       - frontend
 
   db:
-    image: ghcr.io/fyodor-volk/postgres_tg_app:latest
+    image: ghcr.io/fyodor-volk/postgres_tg_app:${GITHUB_SHA}
     build:
       context: ./db
     environment:
@@ -24,7 +24,7 @@ services:
       - pgdata:/var/lib/postgresql/data
 
   backend:
-    image: ghcr.io/fyodor-volk/backend_tg_app:latest
+    image: ghcr.io/fyodor-volk/backend_tg_app:${GITHUB_SHA}
     build:
       context: ./backend
     environment:
@@ -37,7 +37,7 @@ services:
       - "8000:8000"
 
   frontend:
-    image: ghcr.io/fyodor-volk/frontend_tg_app:latest
+    image: ghcr.io/fyodor-volk/frontend_tg_app:${GITHUB_SHA}
     build:
       context: ./frontend
       args:
@@ -48,7 +48,7 @@ services:
       - "8080:80"
 
   telegram:
-    image: ghcr.io/fyodor-volk/telegram_tg_app:latest
+    image: ghcr.io/fyodor-volk/telegram_tg_app:${GITHUB_SHA}
     build:
       context: ./telegram
     environment:
