@@ -10,18 +10,18 @@ services:
     depends_on:
       - frontend
 
-  db:
-    image: ghcr.io/fyodor-volk/postgres_tg_app:${GITHUB_SHA}
-    build:
-      context: ./db
-    environment:
-      POSTGRES_DB: fitness_diary
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-    ports:
-      - "5432:5432"
-    volumes:
-      - pgdata:/var/lib/postgresql/data
+#  db:
+#   image: ghcr.io/fyodor-volk/postgres_tg_app:${GITHUB_SHA}
+#    build:
+#      context: ./db
+#    environment:
+#      POSTGRES_DB: fitness_diary
+#      POSTGRES_USER: postgres
+#      POSTGRES_PASSWORD: postgres
+#    ports:
+#      - "5432:5432"
+#    volumes:
+#      - pgdata:/var/lib/postgresql/data
 
   backend:
     image: ghcr.io/fyodor-volk/backend_tg_app:${GITHUB_SHA}
